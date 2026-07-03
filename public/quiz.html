@@ -793,6 +793,21 @@ const WORKER_URL = 'https://atc-pdf-drive.ghoshaan.workers.dev';
 const LEADERBOARD_PATH = '/contents/public/Quiz/leaderboard.json';
 const DIRECTORY_URL = 'Quiz/leaderboard.json';
 
+// Resolve URL relative to the application root directory
+function getRelativeURL(path) {
+  let href = window.location.href;
+  href = href.split('?')[0].split('#')[0];
+  if (href.endsWith('/')) {
+    href = href.slice(0, -1);
+  }
+  const parts = href.split('/');
+  const last = parts[parts.length - 1];
+  if (last === 'quiz' || last === 'quiz.html' || last.endsWith('.html')) {
+    parts.pop();
+  }
+  return parts.join('/') + '/' + path;
+}
+
 // Application State
 let userCallsign = '';
 let currentQuestionIndex = 0;
@@ -842,7 +857,7 @@ btnStart.addEventListener('click', async () => {
   
   // Fetch questions from JSON configuration file
   try {
-    const res = await fetch('Quiz/quiz_questions.json?t=' + Date.now());
+    const res = await fetch(getRelativeURL('Quiz/quiz_questions.json') + '?t=' + Date.now());
     if (res.ok) {
       quizQuestions = await res.json();
     } else {
@@ -1500,7 +1515,7 @@ async function submitScore(name, score, time) {
     
     // Fallback: fetch from public URL or show empty
     try {
-      const res = await fetch(DIRECTORY_URL + '?t=' + Date.now());
+      const res = await fetch(getRelativeURL(DIRECTORY_URL) + '?t=' + Date.now());
       let fallbackEntries = res.ok ? await res.json() : [];
       fallbackEntries.push(newEntry);
       fallbackEntries.sort((a, b) => {
@@ -1557,7 +1572,7 @@ async function loadLeaderboardOnStartup() {
   messageDiv.textContent = '';
   
   try {
-    const res = await fetch(DIRECTORY_URL + '?t=' + Date.now());
+    const res = await fetch(getRelativeURL(DIRECTORY_URL) + '?t=' + Date.now());
     if (res.ok) {
       const entries = await res.json();
       
