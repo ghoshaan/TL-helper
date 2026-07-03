@@ -641,6 +641,35 @@
         <button id="btn-start" class="btn" disabled>Start Quiz</button>
       </div>
     </div>
+
+    <!-- Welcome Leaderboard -->
+    <div class="card" style="margin-top: 30px;">
+      <h3 class="leaderboard-title" style="margin-top: 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; text-align: center;">Quiz Leaderboard</h3>
+      
+      <div style="display: flex; justify-content: center; align-items: center; padding: 20px; gap: 10px;" id="welcome-leaderboard-loading">
+        <div class="spinner"></div>
+        <span style="font-size:13px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.1em;">Loading Leaderboard…</span>
+      </div>
+
+      <div class="leaderboard-table-wrap" id="welcome-leaderboard-wrap" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th class="rank-col">Rank</th>
+              <th>Callsign</th>
+              <th class="score-col">Accuracy</th>
+              <th class="time-col">Time</th>
+              <th class="date-col">Date</th>
+            </tr>
+          </thead>
+          <tbody id="welcome-leaderboard-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="welcome-leaderboard-message" class="status-message" style="margin-top: 10px;"></div>
+    </div>
   </div>
 
   <!-- VIEW 2: QUIZ PLAYING -->
@@ -1513,6 +1542,61 @@ function renderLeaderboard(entries, currentEntry) {
   loadingDiv.style.display = 'none';
   tableWrap.style.display = 'block';
 }
+
+// Load leaderboard on welcome screen on startup
+async function loadLeaderboardOnStartup() {
+  const loadingDiv = document.getElementById('welcome-leaderboard-loading');
+  const tableWrap = document.getElementById('welcome-leaderboard-wrap');
+  const messageDiv = document.getElementById('welcome-leaderboard-message');
+  const tbody = document.getElementById('welcome-leaderboard-body');
+  
+  if (!loadingDiv || !tableWrap || !tbody) return;
+  
+  loadingDiv.style.display = 'flex';
+  tableWrap.style.display = 'none';
+  messageDiv.textContent = '';
+  
+  try {
+    const res = await fetch(DIRECTORY_URL + '?t=' + Date.now());
+    if (res.ok) {
+      const entries = await res.json();
+      
+      // Sort logic
+      entries.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (a.time !== b.time) return a.time - b.time;
+        return new Date(b.date) - new Date(a.date);
+      });
+      
+      const top100 = entries.slice(0, 100);
+      
+      tbody.innerHTML = '';
+      top100.forEach((e, idx) => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="rank-col">${idx + 1}</td>
+            <td>${escapeHtml(e.name)}</td>
+            <td class="score-col">${e.score.toFixed(1)}%</td>
+            <td class="time-col">${formatDuration(e.time)}</td>
+            <td class="date-col">${formatDate(e.date)}</td>
+          </tr>
+        `;
+      });
+      
+      loadingDiv.style.display = 'none';
+      tableWrap.style.display = 'block';
+    } else {
+      throw new Error(`Status ${res.status}`);
+    }
+  } catch (err) {
+    console.error('Error loading welcome leaderboard:', err);
+    loadingDiv.style.display = 'none';
+    messageDiv.textContent = 'Leaderboard offline, showing local rankings.';
+  }
+}
+
+// Invoke on page load
+loadLeaderboardOnStartup();
 </script>
 </body>
 </html>
