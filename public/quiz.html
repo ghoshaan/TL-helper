@@ -1361,20 +1361,20 @@ function endQuiz() {
       
       if (i < userSegs.length && i < truthSegs.length) {
         // Compute LCS word similarity
-        const diffRes = wordDiff(gText, uText);
+        const diffRes = wordDiff(uText, gText);
         segScore = diffRes.maxLen > 0 ? (diffRes.lcsLen / diffRes.maxLen) : 1.0;
         
-        // Aligned visual diff
-        const slots = alignedWordDiff(gText, uText);
+        // Aligned visual diff (User = old, Ground Truth = new)
+        const slots = alignedWordDiff(uText, gText);
         diffHtml = renderAlignedDiff(slots);
       } else if (i < truthSegs.length) {
-        // Missing segment entirely
+        // Missing segment entirely: Ground truth exists, user missed it. Show in green (needs to be added).
         segScore = 0;
-        diffHtml = `<span class="da-del">${escapeHtml(gText)}</span>`;
+        diffHtml = `<span class="da-ins">${escapeHtml(gText)}</span>`;
       } else {
-        // User had extra segment
+        // User had extra segment: User text exists, ground truth does not. Show in red/strike-through (needs to be removed).
         segScore = 0;
-        diffHtml = `<span class="da-ins">${escapeHtml(uText)}</span>`;
+        diffHtml = `<span class="da-del">${escapeHtml(uText)}</span>`;
       }
       
       questionScoreSum += segScore;
