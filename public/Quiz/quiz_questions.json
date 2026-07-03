@@ -1,0 +1,40 @@
+[
+  {
+    "audioFile": "Quiz/audio/KSAN-KMYF-Twr-Both-Feb-04-2026-2000Z.mp3",
+    "segments": [
+      "Montgomery tower HELICOPTER EIGHT NINE TWO SIERRA ALFA at midport we've got information Papa requesting westbound departure",
+      "HELICOPTER EIGHT NINE TWO SIERRA ALFA Montgomery tower depart at your own risk proceed as requested westbound"
+    ]
+  },
+  {
+    "audioFile": "Quiz/audio/KBNA-Gnd-Twr-Feb-05-2026-1200Z.wav",
+    "segments": [
+      "AMERICAN THIRTY TWO FIFTY THREE Nashville tower the wind zero one zero at nine RNAV SHWIT runway two left cleared for takeoff",
+      "RNAV SHWIT and two left cleared for takeoff AMERICAN THIRTY TWO FIFTY THREE"
+    ]
+  },
+  {
+    "audioFile": "Quiz/audio/KPRC1-Twr1-Jan-26-2026-1630Z.wav",
+    "segments": [
+      "RIDDLE THIRTY, number three, traffic TWIN STAR downwind, turning a two mile final, runway two one left, cleared to land",
+      "runway two one left cleared to land and we'll be looking for the traffic RIDDLE THIRTY"
+    ]
+  },
+  {
+    "audioFile": "Quiz/audio/KILM2-S-Mar-22-2026-1530Z.wav",
+    "segments": [
+      "alright direct to uh SUMLY and cleared visual two four BRICKYARD FORTY FOUR TWENTY TWO",
+      "BRICKYARD FORTY FOUR TWENTY TWO not cleared but just vectors for",
+      "okay understand uh not cleared for the approach uh direct SUMLY BRICKYARD FORTY FOUR",
+      "AMERICAN TWENTY FIVE THIRTY ONE cleared direct KALDA Kilo Alfa Lima Delta Alfa"
+    ]
+  },
+  {
+    "audioFile": "Quiz/audio/KSJC-20260513003000.wav",
+    "segments": [
+      "San Jose tower MOONEY SIX NINE ZERO FIVE NOVEMBER descending through three thousand for two thousand five hundred",
+      "MOONEY SIX NINE ZERO FIVE NOVEMBER San Jose tower altimeter's two nine nine five cross San Jose midfield at two thousand five hundred",
+      "cross midfield San Jose two thousand MOONEY ZERO FIVE NOVEMBER"
+    ]
+  }
+]
